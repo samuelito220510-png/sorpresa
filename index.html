@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para fer amorr de mi vidaaa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0f;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Particle Canvas ── */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Background gradient overlay ── */
+    .bg-gradient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(180, 40, 80, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(200, 160, 80, 0.10) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(120, 30, 60, 0.12) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    /* ── Main Card ── */
+    .card {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      width: 92%;
+      padding: 60px 48px 48px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 32px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+      animation: cardIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+      box-shadow:
+        0 0 80px rgba(180, 40, 80, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── Glow ring ── */
+    .glow-ring {
+      position: absolute;
+      top: -2px; left: -2px;
+      right: -2px; bottom: -2px;
+      border-radius: 34px;
+      background: conic-gradient(from 0deg, transparent, rgba(200, 80, 120, 0.2), transparent, rgba(200, 160, 80, 0.15), transparent);
+      z-index: -1;
+      animation: glowSpin 6s linear infinite;
+      mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 1px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 1px));
+    }
+
+    @keyframes glowSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Emblem / icon ── */
+    .emblem {
+      font-size: 56px;
+      margin-bottom: 8px;
+      display: inline-block;
+      animation: floatHeart 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 80, 120, 0.3));
+    }
+
+    @keyframes floatHeart {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    /* ── Typography ── */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #f7e8d0 0%, #f0c4a0 50%, #e8a0b0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1.05rem;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+
+    .declaration-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.78);
+      font-weight: 300;
+      margin-bottom: 36px;
+      text-align: left;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .declaration-text .highlight {
+      color: #f0b4c0;
+      font-weight: 400;
+    }
+
+    /* ── Typewriter cursor ── */
+    .cursor-blink {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: #f0b4c0;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ── Buttons ── */
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 44px;
+      border-radius: 60px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #d45a7a, #b04a68);
+      color: #fff;
+      box-shadow: 0 4px 30px rgba(180, 40, 80, 0.3);
+    }
+    .btn-yes:hover {
+      transform: scale(1.06);
+      box-shadow: 0 8px 50px rgba(180, 40, 80, 0.45);
+    }
+
+    .btn-no {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .btn-no:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* ── Celebration overlay ── */
+    .celebration {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(12px);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .celebration.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .celebration-card {
+      text-align: center;
+      padding: 48px 40px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      max-width: 500px;
+      width: 90%;
+      animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .celebration-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #f7e8d0, #f0b4c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .celebration-card p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .celebration-emoji {
+      font-size: 72px;
+      margin-bottom: 12px;
+      display: block;
+      animation: floatHeart 2.5s ease-in-out infinite;
+    }
+
+    /* ── Confetti canvas ── */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 11;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 540px) {
+      .card { padding: 40px 24px 32px; }
+      h1 { font-size: 2rem; }
+      .declaration-text { font-size: 0.95rem; }
+      .btn { padding: 12px 32px; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-gradient"></div>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Main Card -->
+  <div class="card">
+    <div class="glow-ring"></div>
+    <span class="emblem">🤍</span>
+    <h1>Mi Amor Fernanda</h1>
+    <p class="subtitle">— Para la persona más especial el amor de mi vidaa —</p>
+
+    <div class="declaration-text" id="declaration-text">
+      <span id="typewriter"></span><span class="cursor-blink" id="cursor"></span>
+    </div>
+
+    <div class="buttons" id="buttons" style="display:none;">
+      <button class="btn btn-yes" id="btnYes">🤍 S&Iacute;, ACEPTO</button>
+      <button class="btn btn-no" id="btnNo">No</button>
+    </div>
+  </div>
+
+  <!-- Celebration -->
+  <div class="celebration" id="celebration">
+    <div class="celebration-card">
+      <span class="celebration-emoji">🤍</span>
+      <h2>Epaa eres mi mujer ahora hazme de comer, jajaja mentira te amooo amoorrrr</h2>
+      <p>Desde hoy, 11 de octubre de 2026,<br>empieza nuestra historia oficial 💫</p>
+    </div>
+    <canvas id="confetti-canvas"></canvas>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════
+    //  PARTICLES (background)
+    // ═══════════════════════════════════════════
+    const pCanvas = document.getElementById('particles-canvas');
+    const pCtx = pCanvas.getContext('2d');
+    let pW, pH, particles = [];
+
+    function resizeP() {
+      pW = pCanvas.width = window.innerWidth;
+      pH = pCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeP);
+    resizeP();
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * pW;
+        this.y = Math.random() * pH;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3 - 0.1;
+        this.opacity = Math.random() * 0.4 + 0.1;
+        this.shape = Math.random() > 0.85 ? 'heart' : 'dot';
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < -10 || this.x > pW + 10 || this.y < -10 || this.y > pH + 10) this.reset();
+        if (this.y < 0) { this.y = 0; this.speedY *= -1; }
+      }
+      draw() {
+        pCtx.globalAlpha = this.opacity;
+        if (this.shape === 'heart') {
+          pCtx.fillStyle = '#d45a7a';
+          const s = this.size * 2;
+          const x = this.x, y = this.y;
+          pCtx.beginPath();
+          pCtx.moveTo(x, y + s / 4);
+          pCtx.bezierCurveTo(x - s / 2, y - s / 4, x - s / 2, y + s / 2, x, y + s / 2);
+          pCtx.bezierCurveTo(x + s / 2, y + s / 2, x + s / 2, y - s / 4, x, y + s / 4);
+          pCtx.fill();
+        } else {
+          pCtx.fillStyle = '#f0c4a0';
+          pCtx.beginPath();
+          pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          pCtx.fill();
+        }
+        pCtx.globalAlpha = 1;
+      }
+    }
+
+    for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+    function animateP() {
+      pCtx.clearRect(0, 0, pW, pH);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateP);
+    }
+    animateP();
+
+    // ═══════════════════════════════════════════
+    //  TYPEWRITER
+    // ═══════════════════════════════════════════
+    const typewriterEl = document.getElementById('typewriter');
+    const cursorEl = document.getElementById('cursor');
+    const buttonsEl = document.getElementById('buttons');
+
+    const fullText =
+      'Hoy, frente a ti, dejo caer todas las dudas. ' +
+      'Quiero caminar a tu lado, re\u00edr contigo, ' +
+      'abrazarte en los d\u00edas grises y celebrar cada instante juntos. ' +
+      'No hay un \u00abhubiera\u00bb que valga m\u00e1s que un \u00abahora\u00bb. ' +
+      'As\u00ed que te pregunto, <span class="highlight">\u00bfquieres ser mi novia?</span>';
+
+    let index = 0;
+    let isDeleting = false;
+    let displayText = '';
+
+    function type() {
+      if (index < fullText.length) {
+        const char = fullText[index];
+        if (char === '<') {
+          const tagEnd = fullText.indexOf('>', index);
+          displayText += fullText.slice(index, tagEnd + 1);
+          index = tagEnd + 1;
+        } else {
+          displayText += char;
+          index++;
+        }
+        typewriterEl.innerHTML = displayText + '<span class="cursor-blink"></span>';
+        const speed = Math.random() * 30 + 20;
+        setTimeout(type, speed);
+      } else {
+        cursorEl.style.display = 'none';
+        typewriterEl.innerHTML = fullText;
+        buttonsEl.style.display = 'flex';
+        buttonsEl.style.animation = 'fadeIn 0.6s ease';
+      }
+    }
+    type();
+
+    // ═══════════════════════════════════════════
+    //  "NO" BUTTON — playful escape
+    // ═══════════════════════════════════════════
+    const btnNo = document.getElementById('btnNo');
+    let noCount = 0;
+
+    btnNo.addEventListener('mouseenter', () => {
+      if (noCount < 10) {
+        const card = document.querySelector('.card');
+        const rect = card.getBoundingClientRect();
+        const maxX = rect.width - btnNo.offsetWidth - 20;
+        const maxY = rect.height - btnNo.offsetHeight - 20;
+        const randX = (Math.random() - 0.5) * maxX * 0.8;
+        const randY = (Math.random() - 0.5) * maxY * 0.8;
+        btnNo.style.transform = `translate(${randX}px, ${randY}px) scale(0.92)`;
+        btnNo.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+        noCount++;
+      }
+    });
+
+    btnNo.addEventListener('click', () => {
+      btnNo.style.transform = 'scale(0.7)';
+      btnNo.style.opacity = '0.3';
+      setTimeout(() => {
+        btnNo.style.transform = 'scale(1)';
+        btnNo.style.opacity = '1';
+        btnNo.textContent = 'Segura??';
+      }, 300);
+      setTimeout(() => { btnNo.textContent = 'No'; }, 1500);
+    });
+
+    // ═══════════════════════════════════════════
+    //  "YES" BUTTON — celebration
+    // ═══════════════════════════════════════════
+    document.getElementById('btnYes').addEventListener('click', () => {
+      document.getElementById('celebration').classList.add('show');
+      startConfetti();
+    });
+
+    // ═══════════════════════════════════════════
+    //  CONFETTI
+    // ═══════════════════════════════════════════
+    const cCanvas = document.getElementById('confetti-canvas');
+    const cCtx = cCanvas.getContext('2d');
+    let cW, cH, confetti = [], confettiRunning = true;
+
+    function resizeC() {
+      cW = cCanvas.width = window.innerWidth;
+      cH = cCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeC);
+    resizeC();
+
+    const confettiColors = ['#d45a7a', '#f0c4a0', '#f7e8d0', '#e8a0b0', '#c08050', '#ff6b8a', '#ffd700'];
+
+    class ConfettiPiece {
+      constructor() {
+        this.reset(true);
+      }
+      reset(init) {
+        this.x = Math.random() * cW;
+        this.y = init ? Math.random() * cH - cH : -20;
+        this.w = Math.random() * 10 + 4;
+        this.h = Math.random() * 6 + 3;
+        this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 6;
+        this.speedY = Math.random() * 3 + 2;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.opacity = Math.random() * 0.7 + 0.3;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotSpeed;
+        if (this.y > cH + 20) this.reset(false);
+      }
+      draw() {
+        cCtx.save();
+        cCtx.translate(this.x, this.y);
+        cCtx.rotate((this.rotation * Math.PI) / 180);
+        cCtx.globalAlpha = this.opacity;
+        cCtx.fillStyle = this.color;
+        cCtx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+        cCtx.restore();
+      }
+    }
+
+    function startConfetti() {
+      confettiRunning = true;
+      confetti = [];
+      for (let i = 0; i < 250; i++) confetti.push(new ConfettiPiece());
+      animateC();
+    }
+
+    function stopConfetti() {
+      confettiRunning = false;
+    }
+
+    function animateC() {
+      if (!confettiRunning) return;
+      cCtx.clearRect(0, 0, cW, cH);
+      confetti.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateC);
+    }
+
+    // Stop confetti after 8 seconds
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#celebration') && !e.target.closest('.celebration-card')) {
+        document.getElementById('celebration').classList.remove('show');
+        stopConfetti();
+      }
+    });
+  </script>
+</body>
+</html>
